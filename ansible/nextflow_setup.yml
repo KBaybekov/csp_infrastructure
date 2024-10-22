@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Установка Java
+      apt:
+        name: openjdk-11-jre
+        state: present
+        update_cache: yes
+
+    - name: Загрузка и установка Nextflow
+      shell: |
+        wget -qO- https://get.nextflow.io | bash
+        mv nextflow /usr/local/bin/
+      args:
+        creates: /usr/local/bin/nextflow

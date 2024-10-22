@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Установка MUNGE
+      apt:
+        name: munge
+        state: present
+        update_cache: yes
+
+    - name: Генерация ключа MUNGE на контроллере
+      command: /usr/sbin/create-munge-key
+      when: "'controller' in inventory_hostname"
+
+    - name: Копирование ключа MUNGE на узлы
+      copy:
+        src: /etc/munge/munge.key
+        dest: /etc/munge/munge.key
+        owner: munge
+        group: munge
+        mode: '0400'
+      when: "'controller' in inventory_hostname"
+      delegate_to: localhost
+
+    - name: Запуск и включение MUNGE на всех узлах
+      systemd:
+        name: munge
+        enabled: yes
+        state: started

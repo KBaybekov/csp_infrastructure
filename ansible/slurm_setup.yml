@@ -1,0 +1,54 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Установка необходимых пакетов
+      apt:
+        name:
+          - munge
+          - slurm-wlm
+        state: present
+        update_cache: yes
+
+    - name: Создание необходимых директорий для SLURM
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: slurm
+        group: slurm
+      with_items:
+        - /var/spool/slurm-llnl
+        - /var/spool/slurmd
+        - /var/log/slurm
+
+    - name: Копирование ключа MUNGE
+      copy:
+        src: /etc/munge/munge.key
+        dest: /etc/munge/munge.key
+        owner: munge
+        group: munge
+        mode: '0400'
+
+    - name: Запуск и включение MUNGE
+      systemd:
+        name: munge
+        enabled: yes
+        state: started
+
+    - name: Копирование конфигурации slurm.conf
+      template:
+        src: slurm.conf.j2
+        dest: /etc/slurm/slurm.conf
+        owner: slurm
+        group: slurm
+        mode: '0644'
+
+    - name: Запуск и включение SLURM демонов
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - slurmd
+        - slurmctld
+      when: "'controller' in inventory_hostname"
