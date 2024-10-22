@@ -10,7 +10,7 @@
 
     - name: Генерация ключа MUNGE на контроллере
       command: /usr/sbin/create-munge-key
-      when: "'controller' in inventory_hostname"
+      when: inventory_hostname == "dgx10"
 
     - name: Копирование ключа MUNGE на узлы
       copy:
@@ -19,8 +19,9 @@
         owner: munge
         group: munge
         mode: '0400'
-      when: "'controller' in inventory_hostname"
-      delegate_to: localhost
+        remote_src: yes
+      when: inventory_hostname != "dgx10"
+      delegate_to: dgx10
 
     - name: Запуск и включение MUNGE на всех узлах
       systemd:
