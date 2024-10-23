@@ -2,14 +2,16 @@
 - hosts: all
   become: yes
   tasks:
-    - name: Установка необходимых пакетов
+    # Установка SLURM
+    - name: Установка SLURM
       apt:
-        name:
-          - munge
-          - slurm-wlm
+        name: slurm-wlm
         state: present
         update_cache: yes
+      tags:
+        - install
 
+    # Создание необходимых директорий для SLURM
     - name: Создание необходимых директорий для SLURM
       file:
         path: "{{ item }}"
@@ -17,24 +19,14 @@
         owner: slurm
         group: slurm
       with_items:
+        - /etc/slurm
         - /var/spool/slurm-llnl
         - /var/spool/slurmd
         - /var/log/slurm
+      tags:
+        - config
 
-    - name: Копирование ключа MUNGE
-      copy:
-        src: /etc/munge/munge.key
-        dest: /etc/munge/munge.key
-        owner: munge
-        group: munge
-        mode: '0400'
-
-    - name: Запуск и включение MUNGE
-      systemd:
-        name: munge
-        enabled: yes
-        state: started
-
+    # Копирование конфигурации slurm.conf на все узлы
     - name: Копирование конфигурации slurm.conf
       template:
         src: slurm.conf.j2
@@ -42,13 +34,28 @@
         owner: slurm
         group: slurm
         mode: '0644'
+      tags:
+        - config
 
-    - name: Запуск и включение SLURM демонов
+    # Запуск и включение SLURM демонов на всех узлах
+    - name: Запуск SLURM на всех узлах
       systemd:
         name: "{{ item }}"
         enabled: yes
         state: started
       with_items:
         - slurmd
-        - slurmctld
-      when: "'controller' in inventory_hostname"
+      tags:
+        - start
+
+- hosts: slurm_controller
+  become: yes
+  tasks:
+    # Запуск контроллера SLURM на контроллере
+    - name: Запуск SLURM контроллера
+      systemd:
+        name: slurmctld
+        enabled: yes
+        state: started
+      tags:
+        - start
