@@ -12,12 +12,12 @@ SchedulerType=sched/backfill
 
 # Определение узлов
 {% for node in groups['slurm_cpu_nodes'] %}
-NodeName={{ node }} CPUs=256 RealMemory=2000000 State=UNKNOWN
+NodeName={{ node }} CPUs=256 Sockets=2 CoresPerSocket=64 ThreadsPerCore=2 RealMemory=2000000 State=UNKNOWN
 {% endfor %}
 
 # Узел с GPU
 {% for gpu_node in groups['slurm_gpu_nodes'] %}
-NodeName={{ gpu_node }} CPUs=256 RealMemory=2000000 Gres=gpu:8 State=UNKNOWN
+NodeName={{ gpu_node }} CPUs=256 Boards=8 SocketsPerBoard=2 CoresPerSocket=64 ThreadsPerCore=2 RealMemory=2000000 Gres=gpu:8 State=UNKNOWN
 {% endfor %}
 
 # Разделы
