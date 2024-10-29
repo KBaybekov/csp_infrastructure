@@ -15,6 +15,7 @@ def get_folder_structure(directory: str) -> dict:
             structure[item] = get_folder_structure(item_path)  # Рекурсивный вызов для подкаталогов
         else:
             structure[item] = None  # Файл
+        print(f'\r{len(structure)}', end="")
     return structure
 
 def save_structure_to_yaml(directory: str, output_file: str):
