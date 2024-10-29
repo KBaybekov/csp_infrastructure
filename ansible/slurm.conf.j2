@@ -1,4 +1,4 @@
-ClusterName=csp_cluster_0
+ClusterName=my_cluster
 ControlMachine={{ groups['slurm_controller'][0] }}
 SlurmdPort=6818
 SlurmctldPort=6817
@@ -10,16 +10,9 @@ ProctrackType=proctrack/linuxproc
 ReturnToService=2
 SchedulerType=sched/backfill
 
-# Узел с GPU (узел с GPU в отдельной группе)
-{% for gpu_node in groups['gpu_nodes'] %}
-NodeName={{ gpu_node }} CPUs=256 RealMemory=2000000 Gres=gpu:8 State=UNKNOWN
-{% endfor %}
+NodeName=controller_hostname CPUs=256 RealMemory=2000000 State=UNKNOWN
+NodeName=node[1-4] CPUs=256 RealMemory=2000000 State=UNKNOWN
+NodeName=gpu_node CPUs=256 RealMemory=2000000 Gres=gpu:8 State=UNKNOWN
 
-# Определение узлов
-{% for cpu_node in groups['cpu_nodes'] %}
-NodeName={{ cpu_node }} CPUs=256 RealMemory=2000000 State=UNKNOWN
-{% endfor %}
-
-# Разделы (Partitions)
-PartitionName=cpu_nodes Nodes={{ groups['cpu_nodes'] | join(',') }} Default=YES MaxTime=INFINITE State=UP
-PartitionName=gpu_nodes Nodes={{ groups['gpu_nodes'] | join(',') }} MaxTime=INFINITE State=UP
+PartitionName=cpu_nodes Nodes=node[1-4],controller_hostname Default=YES MaxTime=INFINITE State=UP
+PartitionName=gpu_nodes Nodes=gpu_node MaxTime=INFINITE State=UP
