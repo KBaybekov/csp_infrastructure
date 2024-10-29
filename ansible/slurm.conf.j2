@@ -21,5 +21,5 @@ NodeName={{ gpu_node }} CPUs=256 RealMemory=2000000 Gres=gpu:8 State=UNKNOWN
 {% endfor %}
 
 # Разделы
-PartitionName=cpu_nodes Nodes={{ groups['slurm_nodes'] | join(',') }},{{ groups['slurm_controller'][0] }} Default=YES MaxTime=INFINITE State=UP
-PartitionName=gpu_nodes Nodes={{ groups['gpu_nodes'] | join(',') }} MaxTime=INFINITE State=UP
+PartitionName=cpu_nodes Nodes={{ groups['slurm_cpu_nodes'] | join(',') }},{{ groups['slurm_controller'][0] }} Default=YES MaxTime=INFINITE State=UP
+PartitionName=gpu_nodes Nodes={{ groups['slurm_gpu_nodes'] | join(',') }} MaxTime=INFINITE State=UP
