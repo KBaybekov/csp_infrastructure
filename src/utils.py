@@ -27,9 +27,3 @@ def save_structure_to_yaml(directory: str, output_file: str):
     structure = get_folder_structure(directory)
     with open(output_file, 'w') as yaml_file:
         yaml.dump(structure, yaml_file, default_flow_style=False, sort_keys=False)
-
-# Задайте путь к директории и к файлу для вывода
-directory_path = '/path/to/your/directory'
-output_yaml_file = '/path/to/your/output_file.yaml'
-
-save_structure_to_yaml(directory_path, output_yaml_file)
