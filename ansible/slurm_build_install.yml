@@ -26,14 +26,14 @@
           - equivs
         state: present
         update_cache: yes
-      tags: build_slurm
+      tags: make_deps
 
     # Скачивание SLURM исходников
     - name: Скачать исходники SLURM
       get_url:
         url: "{{ slurm_url }}"
         dest: "/tmp/{{ slurm_tarball }}"
-      tags: build_slurm
+      tags: make_deps
 
     # Распаковка исходников
     - name: Распаковать SLURM исходники
@@ -43,7 +43,7 @@
         remote_src: yes
       args:
         creates: "/tmp/slurm-{{ slurm_version }}"
-      tags: build_slurm
+      tags: make_deps
       
     # Установка зависимостей SLURM пакетов
     - name: Установить зависимости SLURM из control-файла
@@ -55,7 +55,7 @@
       args:
         chdir: "/tmp/slurm-{{ slurm_version }}"
           
-      tags: build_slurm
+      tags: make_deps
       
     # Сборка пакетов SLURM
     - name: Собрать пакеты SLURM
