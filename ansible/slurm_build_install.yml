@@ -133,7 +133,7 @@
         group: slurm
         mode: '0644'
       tags:
-        - config
+        - make_config_file
 
     # Запуск и включение SLURM демонов на всех узлах
     - name: Запуск SLURM на всех узлах
