@@ -1,0 +1,21 @@
+- hosts: all
+  become: yes
+  tasks:
+    # Перезапуск демона slurmd на всех узлах (контроллере и нодах)
+    - name: Перезапуск демона slurmd на всех узлах
+      systemd:
+        name: slurmd
+        state: restarted
+        enabled: yes
+      tags:
+        - restart_daemons
+
+    # Перезапуск демона slurmctld только на контроллере
+    - name: Перезапуск демона slurmctld на контроллере
+      systemd:
+        name: slurmctld
+        state: restarted
+        enabled: yes
+      when: inventory_hostname in groups['slurm_controller']
+      tags:
+        - restart_daemons
