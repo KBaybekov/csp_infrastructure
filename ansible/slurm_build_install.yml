@@ -7,15 +7,6 @@
     slurm_url: "https://download.schedmd.com/slurm/{{ slurm_tarball }}"
 
   tasks:
-
-    # Удаление текущей версии SLURM (если нужно)
-    - name: Удалить текущую версию SLURM
-      apt:
-        name: slurm-wlm
-        state: absent
-      ignore_errors: yes
-      tags: rm_old
-
     # Установка зависимостей для сборки пакетов
     - name: Установить зависимости для сборки пакетов
       apt:
@@ -77,3 +68,52 @@
         deb: "/tmp/slurm-{{ slurm_version }}/slurm-smd*{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_cpu_nodes']
       tags: build_slurm
+
+    # Создание необходимых директорий для SLURM
+    - name: Создание необходимых директорий для SLURM
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: slurm
+        group: slurm
+      with_items:
+        - /etc/slurm
+        - /var/spool/slurm-llnl
+        - /var/spool/slurmd
+        - /var/log/slurm
+      tags:
+        - config
+
+    # Копирование конфигурации slurm.conf на все узлы
+    - name: Копирование конфигурации slurm.conf
+      template:
+        src: slurm.conf.j2
+        dest: /etc/slurm/slurm.conf
+        owner: slurm
+        group: slurm
+        mode: '0644'
+      tags:
+        - config
+
+    # Запуск и включение SLURM демонов на всех узлах
+    - name: Запуск SLURM на всех узлах
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - slurmd
+      tags:
+        - start
+
+- hosts: slurm_controller
+  become: yes
+  tasks:
+    # Запуск контроллера SLURM на контроллере
+    - name: Запуск SLURM контроллера
+      systemd:
+        name: slurmctld
+        enabled: yes
+        state: started
+      tags:
+        - start
