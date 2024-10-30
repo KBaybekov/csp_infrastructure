@@ -4,7 +4,7 @@
   vars:
     slurm_version: "24.05.4"  # Версия SLURM для установки
     slurm_tarball: "slurm-${slurm_version}.tar.bz2"
-    slurm_url: "https://download.schedmd.com/slurm/${slurm_tarball}"
+    slurm_url: "https://download.schedmd.com/slurm/slurm-${slurm_version}.tar.bz2"
 
   tasks:
 
@@ -26,12 +26,14 @@
           - equivs
         state: present
         update_cache: yes
+      tags: build_slurm
 
     # Скачивание SLURM исходников
     - name: Скачать исходники SLURM
       get_url:
         url: "{{ slurm_url }}"
         dest: "/tmp/{{ slurm_tarball }}"
+      tags: build_slurm
 
     # Распаковка исходников
     - name: Распаковать SLURM исходники
@@ -41,28 +43,33 @@
         remote_src: yes
       args:
         creates: "/tmp/slurm-{{ slurm_version }}"
-
+      tags: build_slurm
+      
     # Установка зависимостей SLURM пакетов
     - name: Установить зависимости SLURM из control-файла
       command: >
         mk-build-deps -i debian/control
       args:
         chdir: "/tmp/slurm-{{ slurm_version }}"
-
+      tags: build_slurm
+      
     # Сборка пакетов SLURM
     - name: Собрать пакеты SLURM
       command: >
         debuild -b -uc -us
       args:
         chdir: "/tmp/slurm-{{ slurm_version }}"
-
+      tags: build_slurm
+      
     # Установка пакетов SLURM в зависимости от типа узла
     - name: Установить SLURM пакеты на контроллер
       apt:
         deb: "/tmp/slurm-{{ slurm_version }}/../slurm-smd_{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_controller']
-
+      tags: build_slurm
+      
     - name: Установить SLURM пакеты на узлы
       apt:
         deb: "/tmp/slurm-{{ slurm_version }}/../slurm-smd-slurmd_{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_nodes']
+      tags: build_slurm
