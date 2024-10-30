@@ -52,8 +52,8 @@
           mk-build-deps -i debian/control
         responses:
             'Do you want to continue? [Y/n]' : 'y'
-        args:
-          chdir: "/tmp/slurm-{{ slurm_version }}"
+      args:
+        chdir: "/tmp/slurm-{{ slurm_version }}"
           
       tags: build_slurm
       
