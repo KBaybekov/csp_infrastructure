@@ -1,0 +1,37 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    # Шаг 1: Удаление пакетов SLURM
+    - name: Удаление пакетов SLURM
+      apt:
+        name:
+          - slurm-wlm
+          - slurmctld
+          - slurmd
+          - slurm-client
+          - slurmdbd
+          - slurm-wlm-basic-plugins
+        state: absent
+        purge: yes
+      ignore_errors: yes
+
+    # Шаг 2: Удаление конфигурационных файлов SLURM
+    - name: Удаление конфигурационной директории /etc/slurm
+      file:
+        path: /etc/slurm
+        state: absent
+      ignore_errors: yes
+
+    - name: Удаление конфигурационной директории /var/spool/slurm-llnl
+      file:
+        path: /var/spool/slurm-llnl
+        state: absent
+      ignore_errors: yes
+
+    - name: Удаление директории логов SLURM /var/log/slurm
+      file:
+        path: /var/log/slurm
+        state: absent
+      ignore_errors: yes
+
