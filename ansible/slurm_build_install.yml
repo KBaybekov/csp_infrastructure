@@ -118,7 +118,7 @@
         group: slurm
       with_items:
         - /etc/slurm
-        - /var/spool/slurm-llnl
+        - /etc/slurm-llnl
         - /var/spool/slurmd
         - /var/log/slurm
       tags:
@@ -128,7 +128,7 @@
     - name: Копирование конфигурации slurm.conf
       template:
         src: slurm.conf.j2
-        dest: /etc/slurm/slurm.conf
+        dest: /etc/slurm-llnl/slurm.conf
         owner: slurm
         group: slurm
         mode: '0644'
