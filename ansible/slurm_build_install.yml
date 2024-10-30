@@ -54,7 +54,7 @@
         debuild -b -uc -us
       args:
         chdir: "/tmp/slurm-{{ slurm_version }}"
-      #tags: build_slurm
+      tags: build_slurm
       
     # Установка пакетов SLURM в зависимости от типа узла
     - name: Установить SLURM пакеты на контроллер
