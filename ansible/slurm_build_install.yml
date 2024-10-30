@@ -70,10 +70,14 @@
       apt:
         deb: "/tmp/slurm-{{ slurm_version }}/../slurm-smd_{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_controller']
+      args:
+        chdir: "/tmp/slurm-{{ slurm_version }}"
       tags: build_slurm
       
     - name: Установить SLURM пакеты на узлы
       apt:
         deb: "/tmp/slurm-{{ slurm_version }}/../slurm-smd-slurmd_{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_nodes']
+      args:
+        chdir: "/tmp/slurm-{{ slurm_version }}"
       tags: build_slurm
