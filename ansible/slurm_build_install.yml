@@ -89,6 +89,12 @@
         - /tmp/slurm-smd-client_24.05.4-1_amd64.deb
       when: inventory_hostname in groups['slurm_cpu_nodes']
       tags: install_slurm
+    
+    # Создание группы slurm
+    - name: Создать группу slurm
+      group:
+        name: slurm
+        state: present
 
     # Создание пользователя slurm
     - name: Создать пользователя slurm без домашней директории
