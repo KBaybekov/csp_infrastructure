@@ -95,6 +95,8 @@
       group:
         name: slurm
         state: present
+      tags:
+        - config
 
     # Создание пользователя slurm
     - name: Создать пользователя slurm без домашней директории
