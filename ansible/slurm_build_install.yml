@@ -119,6 +119,7 @@
 
     # Запуск и включение SLURM демонов на всех узлах
     - name: Запуск SLURM на всех узлах
+      when: inventory_hostname in groups['slurm_cpu_nodes']
       systemd:
         name: "{{ item }}"
         enabled: yes
