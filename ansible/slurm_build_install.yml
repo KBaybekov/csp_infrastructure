@@ -47,10 +47,14 @@
       
     # Установка зависимостей SLURM пакетов
     - name: Установить зависимости SLURM из control-файла
-      command: >
-        mk-build-deps -i debian/control
-      args:
-        chdir: "/tmp/slurm-{{ slurm_version }}"
+      expect:
+        command: >
+          mk-build-deps -i debian/control
+        args:
+          chdir: "/tmp/slurm-{{ slurm_version }}"
+          command: vsx update-software
+          responses:
+            'Do you want to continue? [Y/n]' : 'y'
       tags: build_slurm
       
     # Сборка пакетов SLURM
