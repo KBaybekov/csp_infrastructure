@@ -90,7 +90,17 @@
       when: inventory_hostname in groups['slurm_cpu_nodes']
       tags: install_slurm
 
-
+    # Создание пользователя slurm
+    - name: Создать пользователя slurm без домашней директории
+      user:
+        name: slurm
+        group: slurm
+        shell: /usr/sbin/nologin
+        create_home: no
+        state: present
+      tags:
+        - config
+        
     # Создание необходимых директорий для SLURM
     - name: Создание необходимых директорий для SLURM
       file:
