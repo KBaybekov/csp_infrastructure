@@ -3,8 +3,8 @@
   become: yes
   vars:
     slurm_version: "24.05.4"  # Версия SLURM для установки
-    slurm_tarball: "slurm-${{ slurm_version }}.tar.bz2"
-    slurm_url: "https://download.schedmd.com/slurm/slurm-${{ slurm_tarball }}"
+    slurm_tarball: "slurm-{{ slurm_version }}.tar.bz2"
+    slurm_url: "https://download.schedmd.com/slurm/slurm-{{ slurm_tarball }}"
 
   tasks:
 
