@@ -50,11 +50,11 @@
       expect:
         command: >
           mk-build-deps -i debian/control
+        responses:
+            'Do you want to continue? [Y/n]' : 'y'
         args:
           chdir: "/tmp/slurm-{{ slurm_version }}"
-          command: vsx update-software
-          responses:
-            'Do you want to continue? [Y/n]' : 'y'
+          
       tags: build_slurm
       
     # Сборка пакетов SLURM
