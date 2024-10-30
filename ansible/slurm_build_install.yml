@@ -68,12 +68,12 @@
     # Установка пакетов SLURM в зависимости от типа узла
     - name: Установить SLURM пакеты на контроллер
       apt:
-        deb: "/tmp/slurm-{{ slurm_version }}/slurm-smd_{{ slurm_version }}*.deb"
+        deb: "/tmp/slurm-{{ slurm_version }}/slurm-smd*{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_controller']
       tags: build_slurm
       
     - name: Установить SLURM пакеты на узлы
       apt:
-        deb: "/tmp/slurm-{{ slurm_version }}/slurm-smd-slurmd_{{ slurm_version }}*.deb"
+        deb: "/tmp/slurm-{{ slurm_version }}/slurm-smd*{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_nodes']
       tags: build_slurm
