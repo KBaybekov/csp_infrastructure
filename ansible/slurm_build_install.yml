@@ -72,7 +72,7 @@
       # Установка пакетов SLURM в зависимости от типа узла
     - name: Установить SLURM пакеты на контроллер
       apt:
-        deb: {{ item }}
+        deb={{ item }}
       with_items:
         - /tmp/slurm-smd_24.05.4-1_amd64.deb
         - /tmp/slurm-smd-slurmctld_24.05.4-1_amd64.deb
@@ -82,7 +82,7 @@
       
     - name: Установить SLURM пакеты на узлы
       apt:
-        deb: {{ item }}
+        deb={{ item }}
       with_items:
         - /tmp/slurm-smd_24.05.4-1_amd64.deb
         - /tmp/slurm-smd-slurmd_24.05.4-1_amd64.deb
