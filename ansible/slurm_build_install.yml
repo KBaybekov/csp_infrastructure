@@ -54,20 +54,20 @@
         debuild -b -uc -us
       args:
         chdir: "/tmp/slurm-{{ slurm_version }}"
-      tags: build_slurm
+      tags: make_deps
       
     # Установка пакетов SLURM в зависимости от типа узла
     - name: Добавить SLURM пакеты на контроллер
       apt:
         deb: "/tmp/slurm-{{ slurm_version }}/slurm-smd*{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_controller']
-      tags: build_slurm
+      tags: 
       
     - name: Добавить SLURM пакеты на узлы
       apt:
         deb: "/tmp/slurm-{{ slurm_version }}/slurm-smd*{{ slurm_version }}*.deb"
       when: inventory_hostname in groups['slurm_cpu_nodes']
-      tags: build_slurm
+      tags: make_deps
 
       # Установка пакетов SLURM в зависимости от типа узла
     - name: Установить SLURM пакеты на контроллер
