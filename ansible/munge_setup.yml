@@ -13,6 +13,8 @@
     - name: Генерация ключа MUNGE на контроллере
       command: /usr/sbin/create-munge-key
       when: inventory_hostname == "dgx10"
+      tags:
+        - key
 
     - name: Копирование ключа MUNGE на узлы
       copy:
