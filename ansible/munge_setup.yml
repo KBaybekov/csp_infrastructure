@@ -27,7 +27,7 @@
       when: inventory_hostname != "dgx10"
       delegate_to: dgx10
       tags:
-        - key
+        - copy_key
 
     - name: Запуск и включение MUNGE на всех узлах
       systemd:
