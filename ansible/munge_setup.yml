@@ -7,6 +7,8 @@
         name: munge
         state: present
         update_cache: yes
+      tags:
+        - install
 
     - name: Генерация ключа MUNGE на контроллере
       command: /usr/sbin/create-munge-key
@@ -30,3 +32,5 @@
         name: munge
         enabled: yes
         state: started
+      tags:
+        - start
