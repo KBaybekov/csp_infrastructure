@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: dgx10
   become: yes
   tasks:
     # Шаг 1: Удаление пакетов SLURM
