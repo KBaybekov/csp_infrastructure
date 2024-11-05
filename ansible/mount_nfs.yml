@@ -30,10 +30,6 @@
 
     - name: Монтирование директории /common_share/
       command: mount /common_share/
-      args:
-        warn: false
-
+      
     - name: Монтирование NFS ресурса напрямую
       command: mount dgx10:/raid/kbajbekov/share/
-      args:
-        warn: false
