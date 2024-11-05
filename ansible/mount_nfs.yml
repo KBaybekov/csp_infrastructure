@@ -1,0 +1,39 @@
+---
+- name: Установка NFS, создание и монтирование общей директории
+  hosts: vu10-2-0[27-30]
+  become: yes
+  tasks:
+    - name: Обновление списка пакетов
+      apt:
+        update_cache: yes
+
+    - name: Установка пакета nfs-common
+      apt:
+        name: nfs-common
+        state: present
+
+    - name: Создание директории для общего доступа
+      file:
+        path: /common_share/
+        state: directory
+        mode: '0755'
+
+    - name: Добавление записи в /etc/fstab для NFS
+      mount:
+        path: /common_share/
+        src: dgx10:/raid/kbajbekov/share/
+        fstype: nfs
+        opts: defaults
+        dump: 0
+        passno: 0
+        state: present
+
+    - name: Монтирование директории /common_share/
+      command: mount /common_share/
+      args:
+        warn: false
+
+    - name: Монтирование NFS ресурса напрямую
+      command: mount dgx10:/raid/kbajbekov/share/
+      args:
+        warn: false
