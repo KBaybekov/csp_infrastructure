@@ -1,5 +1,5 @@
 ---
-- hosts: dgx10
+- hosts: all
   become: yes
   vars:
     slurm_version: "24.05.4"  # Версия SLURM для установки
