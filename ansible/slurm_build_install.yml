@@ -129,7 +129,7 @@
         - config
 
     # Копирование конфигурации slurm.conf на все узлы
-    - name: Копирование конфигурации slurm.conf
+    - name: Копирование конфигурации slurm.conf в /etc/slurm-llnl/
       template:
         src: slurm.conf.j2
         dest: /etc/slurm-llnl/slurm.conf
@@ -140,7 +140,7 @@
         - make_config_file
 
     # Копирование конфигурации slurm.conf на все узлы
-    - name: Копирование конфигурации slurm.conf
+    - name: Копирование конфигурации slurm.conf в /etc/slurm/
       template:
         src: slurm.conf.j2
         dest: /etc/slurm/slurm.conf
