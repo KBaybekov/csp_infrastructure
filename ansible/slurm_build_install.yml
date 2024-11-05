@@ -139,6 +139,17 @@
       tags:
         - make_config_file
 
+    # Копирование конфигурации slurm.conf на все узлы
+    - name: Копирование конфигурации slurm.conf
+      template:
+        src: slurm.conf.j2
+        dest: /etc/slurm/slurm.conf
+        owner: slurm
+        group: slurm
+        mode: '0644'
+      tags:
+        - make_config_file
+
     # Запуск и включение SLURM демонов на всех узлах
     - name: Запуск SLURM на всех узлах
       when: inventory_hostname in groups['slurm_cpu_nodes']
