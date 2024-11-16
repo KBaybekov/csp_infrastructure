@@ -14,3 +14,8 @@
         mv nextflow /usr/local/bin/
       args:
         creates: /usr/local/bin/nextflow
+
+    - name: Change nextflow executable mode
+      file:
+        path: /usr/local/bin/nextflow
+        mode: '0755'
