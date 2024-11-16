@@ -44,21 +44,28 @@ def get_samples_in_dir(dir:str, extensions:tuple):
     return files
 
 
-def get_samples_in_dir_tree(dir:str, extensions:tuple) -> list:
+def get_samples_in_dir_tree(dir:str, extensions:tuple, subdir:str='', empty_critical:bool=False) -> list:
     """
     Генерирует список файлов, проходя по дереву папок, корнем которого является dir.
     Выдаёт ошибку, если итоговый список пустой.
 
     :param dir: Директория, где искать файлы.
     :param extensions: Кортеж расширений файлов для поиска.
+    :param subdir: Если не пустой, то возвращает только те файлы,  которые находятся в указанной подпапке.
+    :param empty_critical: Если True — возвращает ошибку при пустом списке файлов.
     :return: Список файлов с путями.
     """
     files = []
     for root, _ds, fs in os.walk(dir):
-        samples = [os.path.join(root, f) for f in fs 
-                    if f.endswith(extensions)]
-        files.extend(samples)
-    if not files:
+        if not subdir:
+            samples = [os.path.join(root, f) for f in fs 
+                        if f.endswith(extensions)]
+            files.extend(samples)
+        else:
+            samples = [os.path.join(root, f) for f in fs 
+                        if f.endswith(extensions) and os.path.basename(root) == subdir]
+            files.extend(samples)
+    if not files & empty_critical:
         raise FileNotFoundError("Образцы не найдены. Проверьте входные и исключаемые образцы, а также директорию с исходными файлами.")
     return files
 

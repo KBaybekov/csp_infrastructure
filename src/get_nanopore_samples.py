@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+""""""
+
 import sys
 from utils import save_yaml, get_samples_in_dir
 
