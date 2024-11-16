@@ -1,6 +1,6 @@
 ---
 - hosts: vu10-2-0*
-  gather_facts: false
+  gather_facts: true
   become: true
   vars:
     default_container_image: ubuntu
