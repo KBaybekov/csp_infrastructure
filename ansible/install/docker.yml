@@ -48,7 +48,7 @@
         state: present
     - name: add current user to docker group
       user:
-        name: kbajbekov
+        name: root
         group: docker
 
     
