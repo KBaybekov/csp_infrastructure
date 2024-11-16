@@ -49,6 +49,6 @@
     - name: add current user to docker group
       user:
         name: kbajbekov
-        sgroup: docker
+        group: docker
 
     
