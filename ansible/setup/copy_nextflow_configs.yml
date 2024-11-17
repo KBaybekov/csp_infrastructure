@@ -1,39 +1,28 @@
 ---
 - hosts: all
   tasks:
-    - name: copy Nextflow configs to main human_variation folder
+    - name: copy changed Nextflow configs to assets folder
       copy:
-        src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/main/*
-        dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation/
+        src: "{{ item.src }}" 
+        dest: "{{ item.dest }}"
         owner: kbajbekov
         mode: '0755'
         remote_src: yes
+      loop:
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/main/nextflow.config
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation/nextflow.config
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/common.nf
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/common.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-cnv-qdnaseq.nf
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-cnv-qdnaseq.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-cnv.nf
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-cnv.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-snp.nf
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-snp.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-str.nf
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-str.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-sv.nf
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-sv.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/methyl.nf
+          dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/modules/methyl.nf
       delegate_to: dgx10
-
-    - name: copy Nextflow configs to modules human_variation folder
-      copy:
-        src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/*
-        dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation/modules/local/
-        owner: kbajbekov
-        mode: '0755'
-        remote_src: yes
-      delegate_to: dgx10
-      
-    - name: copy Nextflow configs to workflows human_variation folder
-      copy:
-        src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/workflows/*
-        dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation/workflows/
-        owner: kbajbekov
-        mode: '0755'
-        remote_src: yes
-      delegate_to: dgx10
-
-    - name: copy Nextflow configs to main wf-alignment folder
-      copy:
-        src: ~/github/csp_infrastructure/nextflow/configs/wf_alignment/*
-        dest: ~/.nextflow/assets/epi2me-labs/wf_alignment/
-        owner: kbajbekov
-        mode: '0755'
-        remote_src: yes
-      delegate_to: dgx10
-      
