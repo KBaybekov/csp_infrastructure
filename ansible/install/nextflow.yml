@@ -19,3 +19,9 @@
       file:
         path: /usr/local/bin/nextflow
         mode: '0755'
+
+    - name: Install pod5 converter
+      pip:
+        name: pod5
+      tags:
+        - pod5
