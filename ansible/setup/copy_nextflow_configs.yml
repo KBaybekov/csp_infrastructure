@@ -11,18 +11,18 @@
       loop:
         - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/main/nextflow.config
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation/nextflow.config
-        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/common.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/common.nf
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/common.nf
-        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-cnv-qdnaseq.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/wf-human-cnv-qdnaseq.nf
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-cnv-qdnaseq.nf
-        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-cnv.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/wf-human-cnv.nf
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-cnv.nf
-        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-snp.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/wf-human-snp.nf
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-snp.nf
-        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-str.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/wf-human-str.nf
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-str.nf
-        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/local/wf-human-sv.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/wf-human-sv.nf
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/local/wf-human-sv.nf
-        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/modules/methyl.nf
+        - src: ~/github/csp_infrastructure/nextflow/configs/wf-human-variation/2.4/changed_configs/workflows/methyl.nf
           dest: ~/.nextflow/assets/epi2me-labs/wf-human-variation//modules/modules/methyl.nf
       delegate_to: dgx10
