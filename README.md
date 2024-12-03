@@ -16,3 +16,9 @@
 !!After downloading nextflow, its deps & worflows for nanopore modify nextflow configs (located in configs). Paths for placing configs are shown in the 1st row of config.
 
 All configs are modified in way of parallel running x4 samples per machine (256 threads, 2 TB RAM).
+
+#### Установка pySlurm
+
+Для работы в Slurm через Python реализован API, обеспечиваемый библиотекой [pyslurm](https://github.com/PySlurm/pyslurm).
+
+Установка:
