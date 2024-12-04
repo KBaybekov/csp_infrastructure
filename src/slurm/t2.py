@@ -52,16 +52,17 @@ def get_idle_nodes(partition_name):
     idle_nodes = [node for node, data in nodes.items() if data['state'] == 'IDLE' and partition_name in data['partitions']]
     return idle_nodes
 
-def convert_fast5_to_pod5(fast5_files:list, sample:str, out_dir:str):
+def convert_fast5_to_pod5(fast5_dir:list, sample:str, pod5_name:str, out_dir:str):
     """
     Запуск задачи конвертации fast5 -> pod5 на CPU
-    :param fast5_files: файлы для конвертации
+    :param fast5_dir: папка с файлами для конвертации
     :param sample: наименование образца
+    :param pod5_name: имя выходного файла
     :param out_dir: папка для результатов
     :return: id задачи Slurm
     """
 
-    command = f"convert_fast5_to_pod5 {fast5_files} --output-dir /data/pod5/{sample}"
+    command = f"pod5 convert fast5 {fast5_dir}*.fast5 --output {out_dir}{}.pod5 --threads 256"
     return submit_slurm_job(command, partition="cpu_nodes", job_name=f"convert_{sample}")
 
 def basecalling(sample):
@@ -88,11 +89,12 @@ def main(in_dir:str):
         # Choose sample
         if samples:
             sample = samples.pop(0)
-            fast5_files = sample_data[sample]
+            fast5_dirs = sample_data[sample]
             
-            # Start converting to pod5
-            job_id = convert_fast5_to_pod5(fast5_files, sample)
-            pending_conversion_jobs.append((job_id, sample))
+            # Start converting to pod5. One subdir per CPU node
+            for idx,fast5_d in enumerate(fast5_dirs):
+                job_id = convert_fast5_to_pod5(fast5_dir=fast5_d, sample=sample, pod5_name=str(idx), out_dir=out_dir)
+                pending_conversion_jobs.append((job_id, sample))
         
         # Check conversion jobs
         for job_id, sample in list(pending_conversion_jobs):
@@ -112,7 +114,9 @@ def main(in_dir:str):
 
     print("All samples processed.")
 
-in_dir = sys.argv[1]
+in_dir = os.path.normpath(os.path.join(sys.argv[1], ''))
+out_dir = os.path.normpath(os.path.join(sys.argv[2], ''))
+ch_d((in_dir, out_dir))
 
 if __name__ == "__main__":
     main(in_dir=in_dir)
