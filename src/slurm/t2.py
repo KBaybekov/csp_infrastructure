@@ -63,8 +63,9 @@ def basecalling(sample):
     return submit_slurm_job(command, partition="gpu_nodes", nodes=1, job_name=f"basecall_{sample}")
 
 def main(in_dir:str):
-    samples = get_dirs_in_dir(dir=in_dir)
-    ch_d(samples)
+    sample_dirs = get_dirs_in_dir(dir=in_dir)
+    #samples = 
+    ch_d(sample_dirs)
     pending_conversion_jobs = []
     pending_basecalling_jobs = []
 

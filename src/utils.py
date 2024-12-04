@@ -38,7 +38,7 @@ def get_dirs_in_dir(dir:str):
     :return: Список путей к файлам.
     """
     # Ищем все файлы в директории с указанными расширениями
-    dirs = [os.path.join(dir, s) for s in os.listdir(dir) if os.path.isdir(f'{dir}{s}')]
+    dirs = [os.path.normpath(os.path.join(dir, s)) for s in os.listdir(dir) if os.path.isdir(f'{dir}{s}')]
     if not dirs:
         raise FileNotFoundError("Образцы не найдены. Проверьте входные и исключаемые образцы, а также директорию с исходными файлами.")
     return dirs
