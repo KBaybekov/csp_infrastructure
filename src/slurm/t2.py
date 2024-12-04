@@ -62,7 +62,7 @@ def convert_fast5_to_pod5(fast5_dir:list, sample:str, pod5_name:str, out_dir:str
     :return: id задачи Slurm
     """
 
-    command = f"pod5 convert fast5 {fast5_dir}*.fast5 --output {out_dir}{}.pod5 --threads 256"
+    command = f"pod5 convert fast5 {fast5_dir}*.fast5 --output {out_dir}{sample}.pod5 --threads 256"
     return submit_slurm_job(command, partition="cpu_nodes", job_name=f"convert_{sample}")
 
 def basecalling(sample):
