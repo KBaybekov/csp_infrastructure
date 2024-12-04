@@ -9,8 +9,6 @@ Usage: t2.py in_dir
 """
 import sys
 import os
-t = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(t)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import get_dirs_in_dir, get_fast5_dirs
 import pyslurm
@@ -22,6 +20,18 @@ def ch_d(d):
     exit()
 
 
+def convert_fast5_to_pod5(fast5_dir:list, sample:str, pod5_name:str, out_dir:str, threads:str):
+    """
+    Запуск задачи конвертации fast5 -> pod5 на CPU. Задача выполняется на одной ЦПУ ноде
+    :param fast5_dir: папка с файлами для конвертации
+    :param sample: наименование образца
+    :param pod5_name: имя выходного файла
+    :param out_dir: папка для результатов
+    :return: id задачи Slurm
+    """
+    command = f"pod5 convert fast5 {fast5_dir}*.fast5 --output {out_dir}{sample}/{pod5_name}.pod5 --threads {threads}"
+    
+    return submit_slurm_job(command, partition="cpu_nodes", job_name=f"pod5_convert_{sample}_{pod5_name}", nodes=1)
 
 def submit_slurm_job(command, partition, nodes=1, job_name="slurm_job"):
     """Отправка задачи в SLURM через pyslurm"""
@@ -52,19 +62,6 @@ def get_idle_nodes(partition_name):
     idle_nodes = [node for node, data in nodes.items() if data['state'] == 'IDLE' and partition_name in data['partitions']]
     return idle_nodes
 
-def convert_fast5_to_pod5(fast5_dir:list, sample:str, pod5_name:str, out_dir:str):
-    """
-    Запуск задачи конвертации fast5 -> pod5 на CPU
-    :param fast5_dir: папка с файлами для конвертации
-    :param sample: наименование образца
-    :param pod5_name: имя выходного файла
-    :param out_dir: папка для результатов
-    :return: id задачи Slurm
-    """
-
-    command = f"pod5 convert fast5 {fast5_dir}*.fast5 --output {out_dir}{sample}.pod5 --threads 256"
-    return submit_slurm_job(command, partition="cpu_nodes", job_name=f"convert_{sample}")
-
 def basecalling(sample):
     """Запуск бейсколлинга на GPU"""
     command = f"basecalling /data/pod5/{sample} --output-dir /data/basecall/{sample}"
@@ -77,8 +74,6 @@ def main(in_dir:str):
     # Create list of samples for iteration
     samples = list(sample_data.keys())
     samples.sort()
-    for sample in samples:
-        ch_d(sample_data[sample])
         
     # Create list for slurm jobs (each for one type of jobs)
     pending_conversion_jobs = []
@@ -91,9 +86,12 @@ def main(in_dir:str):
             sample = samples.pop(0)
             fast5_dirs = sample_data[sample]
             
-            # Start converting to pod5. One subdir per CPU node
+            # Start converting to pod5
             for idx,fast5_d in enumerate(fast5_dirs):
-                job_id = convert_fast5_to_pod5(fast5_dir=fast5_d, sample=sample, pod5_name=str(idx), out_dir=out_dir)
+                job_id = convert_fast5_to_pod5(fast5_dir=fast5_d, sample=sample,
+                                               pod5_name=str(idx),out_dir=out_dir,
+                                               threads=threads)
+                
                 pending_conversion_jobs.append((job_id, sample))
         
         # Check conversion jobs
@@ -116,7 +114,7 @@ def main(in_dir:str):
 
 in_dir = f'{os.path.normpath(os.path.join(sys.argv[1]))}{os.sep}'
 out_dir = f'{os.path.normpath(os.path.join(sys.argv[2]))}{os.sep}'
-ch_d((in_dir, out_dir))
+threads = sys.argv[3]
 
 if __name__ == "__main__":
     main(in_dir=in_dir)
