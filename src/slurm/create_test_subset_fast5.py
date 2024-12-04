@@ -14,15 +14,13 @@ def main(in_dir:str):
     samples = list(sample_data.keys())
     samples.sort()
     i=0
-    subset_fast5s = 20
+    subset_fast5s = 10
 
     for sample in samples:
         if i < 2:
             fast5_dirs = sample_data[sample]
             for d in fast5_dirs:
                 fast5s = get_samples_in_dir(dir=d, extensions=('.fast5'))[:subset_fast5s]
-                print(fast5s)
-                exit
                 for fast5 in fast5s:
                     os.system(f'mkdir -p {out_dir}{sample} && cp {fast5} {out_dir}{sample}/')
             i+=1
