@@ -12,7 +12,7 @@ import os
 t = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(t)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils import get_dirs_in_dir, get_fast5_files
+from utils import get_dirs_in_dir, get_fast5_dirs
 import pyslurm
 import time
 
@@ -52,8 +52,15 @@ def get_idle_nodes(partition_name):
     idle_nodes = [node for node, data in nodes.items() if data['state'] == 'IDLE' and partition_name in data['partitions']]
     return idle_nodes
 
-def convert_fast5_to_pod5(fast5_files, sample):
-    """Запуск задачи конвертации fast5 -> pod5 на CPU"""
+def convert_fast5_to_pod5(fast5_files:list, sample:str, out_dir:str):
+    """
+    Запуск задачи конвертации fast5 -> pod5 на CPU
+    :param fast5_files: файлы для конвертации
+    :param sample: наименование образца
+    :param out_dir: папка для результатов
+    :return: id задачи Slurm
+    """
+
     command = f"convert_fast5_to_pod5 {fast5_files} --output-dir /data/pod5/{sample}"
     return submit_slurm_job(command, partition="cpu_nodes", job_name=f"convert_{sample}")
 
@@ -64,25 +71,26 @@ def basecalling(sample):
 
 def main(in_dir:str):
     sample_dirs = get_dirs_in_dir(dir=in_dir)
-    # Create dict with sample_name:[sample_dir, sample_fast5s] as key:val
-    sample_data = {os.path.basename(os.path.normpath(s)):[s, get_fast5_files(dir=s)] for s in sample_dirs}
+    # Create dict with sample_name:[sample_fast5s_dirs] as key:val
+    sample_data = {os.path.basename(os.path.normpath(s)):get_fast5_dirs(dir=s) for s in sample_dirs}
     # Create list of samples for iteration
     samples = list(sample_data.keys())
     samples.sort()
-    ch_d(samples)
-    
+    for sample in samples:
+        ch_d(sample_data[sample])
+        
     # Create list for slurm jobs (each for one type of jobs)
     pending_conversion_jobs = []
     pending_basecalling_jobs = []
 
     # Loop will proceed until we're out of jobs or samples to process
     while samples or pending_conversion_jobs or pending_basecalling_jobs:
-        # Step 2: Выбираем образец
+        # Choose sample
         if samples:
             sample = samples.pop(0)
-            fast5_files = get_fast5_files(sample)
+            fast5_files = sample_data[sample]
             
-            # Step 4: Конвертируем fast5 -> pod5
+            # Start converting to pod5
             job_id = convert_fast5_to_pod5(fast5_files, sample)
             pending_conversion_jobs.append((job_id, sample))
         

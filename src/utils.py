@@ -2,7 +2,14 @@ import os
 import yaml
 
 
-def get_fast5_files(dir:str) -> list:
+def get_fast5_dirs(dir:str) -> list:
+    """
+    Генерирует список подпапок, содержащих fast5 и именованных 'fast5_pass'.
+    Выдаёт ошибку, если итоговый список пустой.
+
+    :param dir: Директория, где искать файлы.
+    :return: Список папок.
+    """
     subdirs = [os.path.join(dir, s) for s in os.listdir(dir) if os.path.isdir(os.path.join(dir, s, ))]
     fast5s = []
     for subdir in subdirs:
@@ -10,7 +17,7 @@ def get_fast5_files(dir:str) -> list:
         for root, _ds, fs in os.walk(subdir):
             for f in fs:
                 if f.endswith('.fast5') and os.path.basename(root) == 'fast5_pass':
-                    fast5s.append(os.path.join(root, f))
+                    fast5s.append(os.path.join(root))
 
     if not fast5s:
         raise FileNotFoundError('FAST5 файлы не найдены!')
