@@ -64,20 +64,17 @@ def basecalling(sample):
 
 def main(in_dir:str):
     sample_dirs = get_dirs_in_dir(dir=in_dir)
-
     # Create dict with sample_name:[sample_dir, sample_fast5s] as key:val
     sample_data = {os.path.basename(os.path.normpath(s)):[s, get_fast5_files(dir=s)] for s in sample_dirs}
-    for s in sample_data.keys():
-        ch_d((s, len(sample_data[s][1])))
-
-    
-    
-    for sample in samples:
-        sample_data[sample] = [sam]
+    # Create list of samples for iteration
+    samples = list(sample_data.keys())
     ch_d(samples)
+    
+    # Create list for slurm jobs (each for one type of jobs)
     pending_conversion_jobs = []
     pending_basecalling_jobs = []
 
+    # Loop will proceed until we're out of jobs or samples to process
     while samples or pending_conversion_jobs or pending_basecalling_jobs:
         # Step 2: Выбираем образец
         if samples:
