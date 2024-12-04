@@ -4,18 +4,17 @@ import yaml
 
 def get_fast5_files(dir:str) -> dict:
     subdirs = [os.path.join(dir, s) for s in os.listdir(dir) if os.path.isdir(os.path.join(dir, s, ))]
-    sample_data = {}
+    fast5s = []
     for subdir in subdirs:
-        fast5s = []
+        
         for root, _ds, fs in os.walk(subdir):
             for f in fs:
                 if f.endswith('.fast5') and os.path.basename(root) == 'fast5_pass':
                     fast5s.append(os.path.join(root, f))
-        if fast5s:
-            sample_data[os.path.basename(subdir)] = fast5s
-    if not sample_data:
+                       
+    if not fast5s:
         raise FileNotFoundError('FAST5 файлы не найдены!')
-    return sample_data
+    return fast5s
 
 
 

@@ -12,7 +12,7 @@ import os
 t = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(t)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils import get_dirs_in_dir, get_samples_in_dir
+from utils import get_dirs_in_dir, get_fast5_files
 import pyslurm
 import time
 
@@ -64,7 +64,16 @@ def basecalling(sample):
 
 def main(in_dir:str):
     sample_dirs = get_dirs_in_dir(dir=in_dir)
-    samples = [os.path.basename(os.path.normpath(s)) for s in sample_dirs]
+
+    # Create dict with sample_name:[sample_dir, sample_fast5s] as key:val
+    sample_data = {os.path.basename(os.path.normpath(s)):[s, get_fast5_files(dir=s)] for s in sample_dirs}
+    for s in sample_data.keys():
+        ch_d(s)
+
+    
+    
+    for sample in samples:
+        sample_data[sample] = [sam]
     ch_d(samples)
     pending_conversion_jobs = []
     pending_basecalling_jobs = []
