@@ -21,7 +21,7 @@ def main(in_dir:str):
             for d in fast5_dirs:
                 fast5s = get_samples_in_dir(dir=d, extensions=('.fast5'))[:subset_fast5s]
                 for fast5 in fast5s:
-                    os.system(f'mkdir -p {out_dir}{sample} cp {fast5} {out_dir}{sample}/')
+                    os.system(f'mkdir -p {out_dir}{sample} && cp {fast5} {out_dir}{sample}/')
             i+=1
 
 
