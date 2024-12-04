@@ -15,8 +15,9 @@ def main(in_dir:str):
     samples.sort()
     i=0
     subset_fast5s = 20
-    while i != 2:
-        for sample in samples:
+
+    for sample in samples:
+        if i < 2:
             fast5_dirs = sample_data[sample]
             for d in fast5_dirs:
                 fast5s = get_samples_in_dir(dir=d, extensions=('.fast5'))[:subset_fast5s]
