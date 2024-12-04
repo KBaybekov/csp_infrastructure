@@ -68,6 +68,7 @@ def main(in_dir:str):
     sample_data = {os.path.basename(os.path.normpath(s)):[s, get_fast5_files(dir=s)] for s in sample_dirs}
     # Create list of samples for iteration
     samples = list(sample_data.keys())
+    samples.sort()
     ch_d(samples)
     
     # Create list for slurm jobs (each for one type of jobs)
