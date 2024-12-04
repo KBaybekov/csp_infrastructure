@@ -12,7 +12,7 @@ import os
 t = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(t)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils import get_samples_in_dir
+from utils import get_dirs_in_dir, get_samples_in_dir
 import pyslurm
 import time
 
@@ -63,7 +63,7 @@ def basecalling(sample):
     return submit_slurm_job(command, partition="gpu_nodes", nodes=1, job_name=f"basecall_{sample}")
 
 def main(in_dir:str):
-    samples = get_samples_in_dir(dir=in_dir, extensions=('/'))
+    samples = get_dirs_in_dir(dir=in_dir)
     ch_d(samples)
     pending_conversion_jobs = []
     pending_basecalling_jobs = []

@@ -28,6 +28,21 @@ def get_fast5_files(dir:str) -> dict:
         raise FileNotFoundError("Образцы не найдены. Проверьте входные и исключаемые образцы, а также директорию с исходными файлами.")
     return files
 
+def get_dirs_in_dir(dir:str):
+    """
+    Генерирует список подпапок в указанной папке.
+    Выдаёт ошибку, если итоговый список пустой.
+
+    :param dir: Директория, где искать файлы.
+    :param extensions: Расширения файлов для поиска.
+    :return: Список путей к файлам.
+    """
+    # Ищем все файлы в директории с указанными расширениями
+    dirs = [os.path.join(dir, s) for s in os.listdir(dir) if os.path.isdir(f'{dir}{s}')]
+    if not dirs:
+        raise FileNotFoundError("Образцы не найдены. Проверьте входные и исключаемые образцы, а также директорию с исходными файлами.")
+    return dirs
+
 def get_samples_in_dir(dir:str, extensions:tuple):
     """
     Генерирует список файлов на основе включающих и исключающих образцов.
