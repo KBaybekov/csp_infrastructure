@@ -8,12 +8,13 @@ After converting all sample's .fast5 files to .pod5 on CPU nodes, basecalling st
 Usage: t2.py in_dir
 """
 import sys
+import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.utils import get_samples_in_dir
 import pyslurm
 import time
-import os
+
 
 def ch_d(d):
     print(d)
