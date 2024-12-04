@@ -114,8 +114,8 @@ def main(in_dir:str):
 
     print("All samples processed.")
 
-in_dir = os.path.normpath(os.path.join(sys.argv[1], ''))
-out_dir = os.path.normpath(os.path.join(sys.argv[2], ''))
+in_dir = os.path.normpath(os.path.join(sys.argv[1], '/'))
+out_dir = os.path.normpath(os.path.join(sys.argv[2], '/'))
 ch_d((in_dir, out_dir))
 
 if __name__ == "__main__":
