@@ -64,8 +64,8 @@ def basecalling(sample):
 
 def main(in_dir:str):
     sample_dirs = get_dirs_in_dir(dir=in_dir)
-    #samples = 
-    ch_d(sample_dirs)
+    samples = [os.path.basename(os.path.normpath(s)) for s in sample_dirs]
+    ch_d(samples)
     pending_conversion_jobs = []
     pending_basecalling_jobs = []
 
