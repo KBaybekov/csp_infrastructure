@@ -2,7 +2,7 @@ import os
 import yaml
 
 
-def get_fast5_files(dir:str) -> dict:
+def get_fast5_files(dir:str) -> list:
     subdirs = [os.path.join(dir, s) for s in os.listdir(dir) if os.path.isdir(os.path.join(dir, s, ))]
     fast5s = []
     for subdir in subdirs:
@@ -11,10 +11,10 @@ def get_fast5_files(dir:str) -> dict:
             for f in fs:
                 if f.endswith('.fast5') and os.path.basename(root) == 'fast5_pass':
                     fast5s.append(os.path.join(root, f))
-                       
+
     if not fast5s:
         raise FileNotFoundError('FAST5 файлы не найдены!')
-    return fast5s
+    return list(set(fast5s))
 
 
 
