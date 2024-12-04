@@ -12,8 +12,7 @@ import os
 t = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(t)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from src.utils import get_samples_in_dir
+from utils import get_samples_in_dir
 import pyslurm
 import time
 
