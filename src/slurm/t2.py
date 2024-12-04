@@ -68,7 +68,7 @@ def main(in_dir:str):
     # Create dict with sample_name:[sample_dir, sample_fast5s] as key:val
     sample_data = {os.path.basename(os.path.normpath(s)):[s, get_fast5_files(dir=s)] for s in sample_dirs}
     for s in sample_data.keys():
-        ch_d((s, sample_data[s]))
+        ch_d((s, len(sample_data[s][1])))
 
     
     
