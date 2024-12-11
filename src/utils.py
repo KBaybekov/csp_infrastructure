@@ -2,38 +2,6 @@ import os
 import yaml
 
 
-def get_fast5_dirs(dir:str) -> list:
-    """
-    Генерирует список подпапок, содержащих fast5 и именованных 'fast5_pass'.
-    Выдаёт ошибку, если итоговый список пустой.
-
-    :param dir: Директория, где искать файлы.
-    :return: Список папок.
-    """
-    subdirs = [os.path.join(dir, s) for s in os.listdir(dir) if os.path.isdir(os.path.join(dir, s, ))]
-    fast5s = []
-    for subdir in subdirs:
-        
-        for root, _ds, fs in os.walk(subdir):
-            for f in fs:
-                if f.endswith('.fast5') and os.path.basename(root) == 'fast5_pass':
-                    fast5s.append(os.path.join(root))
-
-    if not fast5s:
-        raise FileNotFoundError('FAST5 файлы не найдены!')
-    return list(set(fast5s))
-
-
-
-
-
-
-
-    files = [os.path.join(dir, s) for s in os.listdir(dir) if os.path.isdir({os.path.join(dir, s, )}) and os.path]
-    if not files:
-        raise FileNotFoundError("Образцы не найдены. Проверьте входные и исключаемые образцы, а также директорию с исходными файлами.")
-    return files
-
 def get_dirs_in_dir(dir:str):
     """
     Генерирует список подпапок в указанной папке.
