@@ -150,6 +150,18 @@
       tags:
         - make_config_file
 
+    # Конфигурирование и установка служебных файлов через make
+    - name: Конфигурирование и установка служебных файлов через make
+      command: chdir=/tmp/slurm-24.05.4/ ./configure && make install
+      tags:
+        - run_make
+
+    # Установка pyslurm
+    - name: Установка pyslurm
+      command: chdir=/common_share/github/pyslurm/ pip install .
+      tags:
+        - pyslurm
+
     # Запуск и включение SLURM демонов на всех узлах
     - name: Запуск SLURM на всех узлах
       when: inventory_hostname in groups['slurm_cpu_nodes']
