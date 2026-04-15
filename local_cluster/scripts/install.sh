@@ -9,3 +9,4 @@ cd ..
 git clone https://github.com/kubernetes-sigs/kubespray.git
 
 pip install -r kubespray/requirements.txt
+
