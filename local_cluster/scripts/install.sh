@@ -1,8 +1,8 @@
-sudo apt install git
-
+source .venv/bin/activate # активируем питон >=3.11
 pip install ansible-core
+git submodule update --init --recursive
 
-ansible-playbook playbooks/00-prerequisites.yml -i inventory/inventory.yml
+ansible-playbook playbooks/01-kubespray.yml -i inventory/inventory.yml
 
 cd ..
 
