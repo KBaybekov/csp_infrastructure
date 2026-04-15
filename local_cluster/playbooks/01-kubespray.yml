@@ -1,0 +1,3 @@
+---
+- name: Развертывание кластера Kubernetes с помощью Kubespray
+  import_playbook: ../kubespray/cluster.yml
