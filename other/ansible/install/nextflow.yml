@@ -1,0 +1,50 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Установка Java
+      apt:
+        name: openjdk-11-jre
+        state: present
+        update_cache: yes
+      tags:
+      - install_java
+
+    - name: Checking java visibility
+      command: java --version
+      register: get_nxf_version
+      tags: check_java
+    - debug:
+        var: get_nxf_version.stdout_lines
+      tags: check_java  
+
+    - name: Загрузка и установка Nextflow
+      shell: |
+        wget -qO- https://get.nextflow.io | bash
+        mv nextflow /usr/local/bin/
+      args:
+        creates: /usr/local/bin/nextflow
+      tags:
+      - install_nxf
+
+    - name: Change nextflow executable mode
+      file:
+        path: /usr/local/bin/nextflow
+        mode: '0755'
+      tags:
+      - chmod
+
+    - name: Checking nextflow usability
+      command: nextflow info
+      register: check_nxf
+      tags: check_nxf
+    - debug:
+        var: check_nxf.stdout_lines
+      tags: check_nxf  
+
+    - name: Remove file (delete file)
+      ansible.builtin.file:
+        path: /usr/local/bin/nextflow
+        state: absent
+      tags:
+      - remove

@@ -1,0 +1,11 @@
+- hosts: all
+  vars:
+    nxf_aln: "epi2me-labs/wf-alignment"
+    nxf_hum_var: "epi2me-labs/wf-human-variation"
+  
+  tasks:
+    - name: Pull nxf_aln
+      command: nextflow pull {{ nxf_aln }}
+    
+    - name: Pull nxf_hum_var
+      command: nextflow pull {{ nxf_hum_var }}

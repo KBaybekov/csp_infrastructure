@@ -1,0 +1,26 @@
+orchestrator-iac/
+├── main.sh                      # Наш главный скрипт-менеджер
+├── config/
+│   └── environment.yaml         # Настройки для dev/staging/prod
+├── terraform/                   # Все, что касается инфраструктуры
+│   ├── modules/
+│   │   ├── aws-eks/             # Модуль для AWS EKS
+│   │   ├── gcp-gke/             # Модуль для Google GKE
+│   │   └── local-k3s/           # Модуль для локального кластера (k3s)
+│   └── environments/            # Конфигурации Terraform для каждой среды
+│       ├── cloud/
+│       │   ├── main.tf
+│       │   └── terraform.tfvars
+│       └── local/
+│           └── ...
+├── kubernetes/                  # Манифесты и Helm-чарты
+│   ├── namespaces/
+│   │   └── bioinf-namespace.yaml
+│   └── helm/
+│       ├── minio-operator/      # Чарт для MinIO (если есть)
+│       └── prefect-server/      # Чарт для Prefect Server
+└── scripts/
+    ├── 
+    ├── install_tools.sh         # Скрипт для установки зависимостей
+    ├── deploy_apps.sh           # Скрипт для развертывания через Helm
+    └── cleanup.sh               # Вспомогательный скрипт для очистки

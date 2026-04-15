@@ -17,6 +17,8 @@
 
 All configs are modified in way of parallel running x4 samples per machine (256 threads, 2 TB RAM).
 
+На этапе установки конфигов через make демон может потерять конфиг слёрма. Решение - прописать путь к конфигу в переменную $SLURM_CONF и занести её в .bashrc
+
 #### Установка pySlurm
 
 Для работы в Slurm через Python реализован API, обеспечиваемый библиотекой [pyslurm](https://github.com/PySlurm/pyslurm).

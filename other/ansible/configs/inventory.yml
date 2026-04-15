@@ -1,0 +1,15 @@
+cpu_nodes:
+  hosts:
+    vu10-2-027:
+      ansible_host: 10.102.100.57
+    vu10-2-028:
+      ansible_host: 10.102.100.58
+    vu10-2-029:
+      ansible_host: 10.102.100.59
+    vu10-2-030:
+      ansible_host: 10.102.100.60
+
+gpu_nodes:
+  hosts:
+    dgx10-2-06:
+      ansible_host: 10.110.22.174

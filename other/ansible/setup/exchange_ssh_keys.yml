@@ -1,0 +1,27 @@
+---
+- name: Exchange SSH keys between all servers
+  hosts: all
+  become: false
+  tasks:
+    - name: Ensure .ssh directory exists
+      ansible.builtin.file:
+        path: "~/.ssh"
+        state: directory
+        mode: '0700'
+    - name: Ensure SSH key exists for the user
+      community.crypto.openssh_keypair:
+        path: "~/.ssh/id_rsa"
+        type: rsa
+        size: 2048
+      register: ssh_keys
+
+    - name: Gather all public keys into a list
+      ansible.builtin.set_fact:
+        pubkey: "{{ ssh_keys.public_key }}"
+
+    - name: Distribute keys to all hosts
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user | default(ansible_user_id) }}"
+        state: present
+        key: "{{ item }}"
+      loop: "{{ groups['all'] | map('extract', hostvars, 'pubkey') | list }}"

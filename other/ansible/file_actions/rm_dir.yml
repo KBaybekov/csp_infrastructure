@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+  - name: Remove file (delete file)
+    ansible.builtin.file:
+      path: /home/PAK-CSPMZ/kbajbekov/.nextflow/assets/
+      state: absent
+    tags:
+    - remove

@@ -1,0 +1,10 @@
+---
+- hosts: all
+  #become: yes
+  tasks:
+    - name: (Re)Install pod5 converter
+      pip:
+        name: pod5
+        state: latest
+      tags:
+        - pod5

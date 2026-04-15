@@ -1,0 +1,12 @@
+---
+- name: Copy slurm configs
+  hosts: all
+  become: true
+  tasks:
+    - name: Copy changed Nextflow configs to assets folder
+      ansible.builtin.copy:
+        src: "/etc/slurm/slurm.conf"
+        dest: "/etc/slurm/slurm.conf"
+        owner: slurm
+        group: slurm
+        mode: '0755'

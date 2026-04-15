@@ -1,0 +1,25 @@
+---
+- name: Deploy Prefect Worker
+  hosts: all
+  become: false
+  gather_facts: false
+  vars:
+    # Путь, где будут лежать файлы проекта на удаленном сервере
+    project_dir: "/mnt/cephfs8_rw/nanopore2/service/prefect/docker"
+    compose_file_name: "docker-compose_worker.yml"
+
+  tasks:
+    - name: Run Docker Compose
+      environment:
+        ANSIBLE_HOSTNAME: "{{ inventory_hostname }}"
+        ANSIBLE_HOSTGROUP: "{{ group_names[0] }}"
+        ANSIBLE_CODE_PATH: "/mnt/cephfs8_rw/nanopore2/service"
+        ANSIBLE_RESULTS_PATH: "/mnt/cephfs8_rw/nanopore2/result"
+        ANSIBLE_DATA_PATH: "/mnt/cephfs8_ro/nanopore"
+      community.docker.docker_compose_v2:
+        project_src: "{{ project_dir }}"
+        files:
+          - "{{ compose_file_name }}"
+        state: present
+        pull: always  # Проверить обновления образов перед стартом
+        wait: true     # Подождать, пока сервисы поднимутся
