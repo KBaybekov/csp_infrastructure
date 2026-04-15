@@ -5,12 +5,23 @@
   become: true
 
   tasks:
+    - name: Добавление GPG-ключа Docker
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Добавление GPG-ключа Ceph
+      ansible.builtin.apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: E84AC2C0460F3994
+        state: present
+
     - name: Обновление apt кэша
       ansible.builtin.apt:
         update_cache: true
-        ignore_errors: true
         cache_valid_time: 3600
       when: ansible_os_family == "Debian"
+
 
     - name: Установка базовых пакетов
       ansible.builtin.package:
