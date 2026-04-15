@@ -41,5 +41,5 @@ all:
 
   vars:
     # Глобальные переменные для всех хостов (опционально)
-    ansible_user: root  # Или ваш пользователь, если не root
+    ansible_user: kbajbekov
     # ansible_ssh_private_key_file: "~/.ssh/id_rsa"
